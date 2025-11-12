@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyGMT：Python 地理空間繪圖利器</title>
+    <style>
+        /* 基本 CSS 樣式，確保可讀性 */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            color: #004d40; /* 深綠色 */
+            border-bottom: 3px solid #004d40;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #00796b; /* 綠色 */
+            margin-top: 30px;
+            padding-bottom: 5px;
+            border-bottom: 1px dashed #ccc;
+        }
+        ul {
+            list-style-type: square;
+            margin-left: 20px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        .code-block {
+            background-color: #e8f5e9; /* 淺綠色背景 */
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Courier New', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border-left: 5px solid #388e3c; /* 突出的左邊框 */
+        }
+        .note {
+            background-color: #fff3e0;
+            padding: 10px;
+            border-left: 4px solid #ff9800;
+            margin-top: 20px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌍 PyGMT：Python 地理空間繪圖利器</h1>
+        <p>一個為地球科學家打造，將強大 GMT 功能引入 Python 的介面。</p>
+        
+        <h2>🧐 PyGMT 是什麼？</h2>
+        <p>PyGMT 是一個<strong>開源 Python 庫</strong>，它為著名的 <strong>Generic Mapping Tools (GMT)</strong> 提供了 Python 接口。</p>
+        <p>GMT 是一個在地球科學領域廣泛使用的命令行工具集，而 PyGMT 的目標是：</p>
+        <ul>
+            <li>讓 GMT 的功能對 Python 用戶更友好。</li>
+            <li>將數據處理和繪圖流程整合到 Python 環境中。</li>
+            <li>輕鬆製作出<strong>出版品質 (Publication-Quality)</strong> 的地圖和圖形。</li>
+        </ul>
+
+        <h2>🚀 核心優勢</h2>
+        <ul>
+            <li><strong>Pythonic API:</strong> 使用面向對象的語法，如 <code>fig.coast()</code>，直觀且易於學習。</li>
+            <li><strong>強大的底層:</strong> 繼承 GMT 的所有功能，包括投影、網格處理、色彩映射等。</li>
+            <li><strong>與 Python 生態系統整合:</strong> 可輕鬆搭配 NumPy, Pandas, Xarray 等主流科學計算庫。</li>
+            <li><strong>現代執行模式:</strong> 依賴 GMT 6 的現代模式，大幅簡化繪圖命令。</li>
+        </ul>
+
+        <h2>💡 入門範例：繪製海岸線</h2>
+        <p>以下程式碼展示如何快速繪製台灣周邊的海岸線圖：</p>
+        
+        <div class="code-block">
+            <pre><code>import pygmt
+
+# 1. 建立一個圖 (Figure) 對象
+fig = pygmt.Figure()
+
+# 2. 使用 .coast() 函數繪製海岸線
+fig.coast(
+    # 地圖範圍: [西, 東, 南, 北] 經緯度
+    region=[119, 123, 21, 26],
+    # 投影方式: Mercator 投影，寬度為 10 公分
+    projection="M10c",
+    # 繪製陸地和水域的顏色
+    land="#e0e0e0", # 淺灰色陸地
+    water="skyblue", # 淺藍色水域
+    # 繪製邊框與經緯線
+    frame="a"
+)
+
+# 3. 儲存圖片 (範例將儲存為 PNG 檔)
+# fig.savefig("taiwan_coast.png")
+
+# 4. 在 Jupyter/Colab 環境中顯示圖片
+fig.show()</code></pre>
+        </div>
+
+        <div class="note">
+            <strong>注意：</strong> 運行 PyGMT 需要先安裝 GMT 軟體本身，然後才能透過 Python 套件管理器 (如 Conda 或 Pip) 安裝 PyGMT 庫。
+        </div>
+
+        <h2>🛠️ 安裝 PyGMT (建議使用 Conda)</h2>
+        <p>最推薦且最簡單的安裝方式是使用 <strong>Conda/Mamba</strong>，它會自動處理 GMT 的依賴：</p>
+        <div class="code-block">
+            <code>conda install -c conda-forge pygmt</code>
+        </div>
+        
+        <p>更多資訊請參考 <a href="https://www.pygmt.org" target="_blank">PyGMT 官方網站</a>。</p>
+
+    </div>
+</body>
+</html>
