@@ -4,58 +4,115 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PyGMT：Python 地理空間繪圖利器</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
+        /* CSS Reset and Variables */
+        :root {
+            --color-primary: #00796b; /* 核心綠色 */
+            --color-secondary: #004d40; /* 深綠色 */
+            --color-accent: #ff9800; /* 亮橘色/強調色 */
+            --color-background: #f8fcfc; /* 淺背景 */
+            --color-container: #ffffff; /* 容器背景 */
+            --color-text: #2c3e50; /* 深灰藍文字 */
+            --color-code-bg: #e8f8f7; /* 淺青綠程式碼背景 */
+            --color-note-bg: #fffcf4; /* 淺黃備註背景 */
+            --color-note-border: #ff9800; /* 橘色備註邊框 */
+        }
+
         /* 基本 CSS 樣式，確保可讀性 */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
+            font-family: 'Noto Sans TC', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7; /* 增加行高以提高舒適度 */
             margin: 0;
             padding: 0;
-            background-color: #f4f7f6;
-            color: #333;
+            background-color: var(--color-background);
+            color: var(--color-text);
+            font-weight: 300;
         }
         .container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            max-width: 960px; /* 稍微放大容器寬度 */
+            margin: 50px auto;
+            padding: 40px;
+            background-color: var(--color-container);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* 增加更柔和的陰影 */
+            border-radius: 12px;
         }
         h1 {
-            color: #004d40; /* 深綠色 */
-            border-bottom: 3px solid #004d40;
-            padding-bottom: 10px;
+            color: var(--color-secondary);
+            font-weight: 700;
+            font-size: 2.2em;
+            border-bottom: 4px solid var(--color-primary);
+            padding-bottom: 12px;
+            margin-bottom: 30px;
         }
         h2 {
-            color: #00796b; /* 綠色 */
-            margin-top: 30px;
-            padding-bottom: 5px;
-            border-bottom: 1px dashed #ccc;
+            color: var(--color-primary);
+            font-weight: 700;
+            font-size: 1.6em;
+            margin-top: 40px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        h3 {
+            color: var(--color-secondary);
+            font-weight: 400;
+            font-size: 1.2em;
+            margin-top: 25px;
+        }
+        p {
+            margin-bottom: 15px;
+        }
+        a {
+            color: var(--color-accent); /* 連結使用強調色 */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: #d88000;
+            text-decoration: underline;
         }
         ul {
-            list-style-type: square;
+            list-style-type: '👉 '; /* 現代風格的列表符號 */
             margin-left: 20px;
+            padding-left: 10px;
         }
         li {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
+        /* 程式碼區塊樣式優化 */
         .code-block {
-            background-color: #e8f5e9; /* 淺綠色背景 */
-            padding: 15px;
-            border-radius: 5px;
+            background-color: var(--color-code-bg);
+            padding: 18px;
+            border-radius: 8px;
             overflow-x: auto;
             font-family: 'Consolas', 'Courier New', monospace;
             white-space: pre-wrap;
             word-wrap: break-word;
-            border-left: 5px solid #388e3c; /* 突出的左邊框 */
-        }
-        .note {
-            background-color: #fff3e0;
-            padding: 10px;
-            border-left: 4px solid #ff9800;
+            border-left: 6px solid var(--color-primary); /* 突出的左邊框使用主題色 */
             margin-top: 20px;
+            margin-bottom: 25px;
+        }
+        .code-block code {
+            display: block; /* 確保 code 內的文字換行 */
+            color: #333;
+        }
+        /* 備註區塊樣式優化 */
+        .note {
+            background-color: var(--color-note-bg);
+            padding: 15px;
+            border-left: 5px solid var(--color-note-border);
+            margin-top: 30px;
             font-style: italic;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        .note strong {
+            color: var(--color-note-border);
+        }
+        /* 關鍵術語強調 */
+        strong {
+            font-weight: 700;
+            color: var(--color-secondary);
         }
     </style>
 </head>
@@ -109,9 +166,77 @@ fig.coast(
 # 4. 在 Jupyter/Colab 環境中顯示圖片
 fig.show()</code></pre>
         </div>
+        
+        <h2>📚 深入學習 PyGMT 的常用功能</h2>
+
+        <h3>1. 繪製點資料 (Scattering Points) - 使用 `fig.plot()`</h3>
+        <p><code>fig.plot()</code> 是繪製點、線或多邊形的核心函數。它非常適合標記地震、測站或採樣點等位置。</p>
+        <div class="code-block">
+            <pre><code>import pygmt
+import pandas as pd # 常用於載入點資料
+
+# 假設有一份包含緯度 (lon), 經度 (lat), 大小 (size) 的點資料
+data = pd.DataFrame({
+    "lon": [121.56, 120.20, 121.78],
+    "lat": [25.04, 23.00, 24.97],
+    "size": [0.5, 0.8, 0.6] # 圓圈大小 (c) 或顏色 (C)
+})
+
+fig = pygmt.Figure()
+fig.coast(region=[118, 124, 21, 27], projection="M10c", frame="a", land="tan")
+
+# 使用 plot 繪製點資料
+fig.plot(
+    x=data["lon"], # 經度
+    y=data["lat"], # 緯度
+    style="c", # 圓圈 (circle)
+    size=data["size"] + "c", # 設定點的大小 (單位為公分 c)
+    color="red", # 點的顏色
+    pen="1p,black", # 點的邊框
+    label="重要測站" # 可選的圖例標籤
+)
+
+# fig.show()</code></pre>
+        </div>
+
+        <h3>2. 處理網格資料 (Gridding Data) - 使用 `fig.grdimage()` 與 `fig.contour()`</h3>
+        <p>PyGMT 擅長處理網格數據 (如地形、溫度分佈)，並利用 GMT 的網格處理工具 (如 <code>grdsample</code>, <code>grdcut</code>)。最常用的繪圖指令是：</p>
+        <ul>
+            <li><code>fig.grdimage()</code>: 繪製彩色網格圖。</li>
+            <li><code>fig.contour()</code>: 繪製等高線。</li>
+        </ul>
+
+        <div class="code-block">
+            <pre><code># 示範：載入 PyGMT 內建的地球地形網格資料 (Earth Relief)
+fig = pygmt.Figure()
+
+# 1. 取得網格資料 (例如 15 弧秒解析度)
+# 這行程式碼會自動下載資料
+grid = pygmt.datasets.load_earth_relief(resolution="15s", region=[120, 122, 22, 25])
+
+# 2. 建立色彩映射表 (Color Paletter Table, CPT)
+pygmt.makecpt(
+    cmap="topo", # 地形顏色
+    series=[grid.min(), grid.max()] # 顏色範圍
+)
+
+# 3. 繪製彩色地形網格圖
+fig.grdimage(
+    grid=grid,
+    region=[120, 122, 22, 25],
+    projection="M6c",
+    frame=["a", "+t臺灣地形圖"]
+)
+
+# 4. 繪製顏色條 (Colorbar)
+fig.colorbar(frame=["a500f100", "x+lElevation", "y+lm"])
+
+# fig.show()</code></pre>
+        </div>
+
 
         <div class="note">
-            <strong>注意：</strong> 運行 PyGMT 需要先安裝 GMT 軟體本身，然後才能透過 Python 套件管理器 (如 Conda 或 Pip) 安裝 PyGMT 庫。
+            <strong>注意：</strong> 運行 PyGMT 需要先安裝 **GMT 軟體本身**，然後才能透過 Python 套件管理器 (如 Conda 或 Pip) 安裝 PyGMT 庫。
         </div>
 
         <h2>🛠️ 安裝 PyGMT (建議使用 Conda)</h2>
